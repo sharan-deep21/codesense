@@ -36,7 +36,13 @@ SUPABASE_HEADERS = {
 
 def supabase_insert(table, data):
     url = f"{SUPABASE_URL}/rest/v1/{table}"
-    res = requests.post(url, headers=SUPABASE_HEADERS, json=data)
+    headers = {
+        **SUPABASE_HEADERS,
+        "Prefer": "return=representation"
+    }
+    res = requests.post(url, headers=headers, json=data)
+    print(f"Supabase insert status: {res.status_code}")
+    print(f"Supabase insert response: {res.text}")
     return res.json()
 
 def supabase_select(table, filters=""):
